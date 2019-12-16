@@ -1,6 +1,8 @@
 package com.booking.pwnsome_booking.dto;
 
-public class BookDTO {
+import java.io.*;
+
+public class BookDTO implements Serializable {
 
     private Long Id;
     private String title;

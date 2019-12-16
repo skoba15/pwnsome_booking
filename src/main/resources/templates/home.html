@@ -1,0 +1,61 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<style>
+    form {
+        margin:0 auto;
+        width:300px
+    }
+    input {
+        margin-bottom:3px;
+        padding:10px;
+        width: 100%;
+        border:1px solid #CCC
+    }
+    button {
+        padding:10px
+    }
+    label {
+        cursor:pointer
+    }
+    #form-switch {
+        display:none
+    }
+    #register-form {
+        display:none
+    }
+    #form-switch:checked~#register-form {
+        display:block
+    }
+    #form-switch:checked~#login-form {
+        display:none
+    }
+</style>
+<input type='checkbox' id='form-switch'>
+<form id='login-form' action="" method='post'>
+    <input type="text" placeholder="Username" required>
+    <input type="password" placeholder="Password" required>
+    <button type='submit'>Login</button>
+    <label for='form-switch'><span>Register</span></label>
+</form>
+<form id='register-form' th:action="@{/registerCustomer}" th:object="${customerDTO}" method='post'>
+    <table>
+        <tr>
+            <td width = 200px><input type="text" placeholder="Username" th:field = "*{username}" required></td>
+            <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
+        </tr>
+        <tr>
+            <td><input type="password" placeholder="Password"  th:field="*{password}" required></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+        </tr>
+        <tr>
+            <td>
+                <button type='submit'>Register</button>
+            </td>
+            <td>
+                <label for='form-switch'>Already Member ? Sign In Now..</label>
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+</html>

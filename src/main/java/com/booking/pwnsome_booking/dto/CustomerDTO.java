@@ -1,9 +1,22 @@
 package com.booking.pwnsome_booking.dto;
 
-public class CustomerDTO {
+import com.booking.pwnsome_booking.controller.*;
 
-    private Long id;
+import javax.validation.constraints.*;
+import java.io.*;
+
+
+public class CustomerDTO implements Serializable {
+
+
+    @NotNull
+    @NotEmpty
     private String username;
+
+    @NotNull
+    @NotEmpty
+    @ValidPassword
+    @Size(min = 8)
     private String password;
 
 

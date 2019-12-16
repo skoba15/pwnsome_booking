@@ -10,7 +10,7 @@ import java.util.*;
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 
-    List<Customer> findByUsername(String Username);
+    Customer findByUsername(String Username);
 
     Customer findById(long Id);
 

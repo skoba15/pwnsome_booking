@@ -4,13 +4,25 @@ import com.booking.pwnsome_booking.dto.*;
 import com.booking.pwnsome_booking.model.*;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.*;
 
+import javax.annotation.*;
 import java.util.*;
 
+@Component
 public class CustomerConverter {
 
-    @Autowired
+
     private static ModelMapper modelMapper;
+
+    @Autowired
+    private ModelMapper modelMapper0;
+
+    @PostConstruct
+    private void initStaticDao () {
+        modelMapper = modelMapper0;
+    }
 
     public static CustomerDTO fromEntityToDTO(Customer customer){
         CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);

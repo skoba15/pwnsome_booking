@@ -1,8 +1,8 @@
 package com.booking.pwnsome_booking.model;
 
-import com.sun.istack.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "Customer")
