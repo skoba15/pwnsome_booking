@@ -10,4 +10,6 @@ import java.util.*;
 
 public interface CustomerService{
     public Customer createCustomer (CustomerDTO customerDTO) throws UsernameExistsException;
+
+    public Customer checkCustomer (CustomerDTO customerDTO) throws UsernameExistsException;
 }

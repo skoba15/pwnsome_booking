@@ -23,6 +23,13 @@ public class RegisterController {
     private CustomerService customerService;
 
 
+    @GetMapping("/registerPage")
+    public String registerPage(Model model) {
+        model.addAttribute("customerDTO", new CustomerDTO());
+        return "register";
+    }
+
+
     @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
     public ModelAndView homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model) {
 
@@ -34,10 +41,10 @@ public class RegisterController {
             result.rejectValue("username", "username.exists", "There already exists a customer with the username "+customerDTO.getUsername());
         }
         if(result.hasErrors()){
-            return new ModelAndView("home", "customerDTO", customerDTO);
+            return new ModelAndView("register", "customerDTO", customerDTO);
         }
         else{
-            return new ModelAndView("home", "customerDTO", customerDTO);
+            return new ModelAndView("CustomerPage", "customerDTO", customerDTO);
         }
     }
 

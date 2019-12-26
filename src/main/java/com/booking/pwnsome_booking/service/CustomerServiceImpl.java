@@ -19,19 +19,27 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer createCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
-
-        if(usernameExists(customerDTO.getUsername())){
+        Customer customer = usernameExists(customerDTO.getUsername());
+        if(customer != null){
             throw new UsernameExistsException("There already exists an account with the name " + customerDTO.getUsername());
         }
         return customerRepository.save(CustomerConverter.fromDTOToEntity(customerDTO));
     }
 
-
-    private boolean usernameExists(String username){
-        Customer customer = (Customer) customerRepository.findByUsername(username);
-        if(customer != null){
-            return true;
+    @Override
+    public Customer checkCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
+        Customer customer = usernameExists(customerDTO.getUsername());
+        if(customer != null && customerDTO.getPassword().equals(customer.getPassword())){
+            return customer;
         }
-        return false;
+        else{
+            return null;
+        }
+    }
+
+
+    private Customer usernameExists(String username){
+        Customer customer = (Customer) customerRepository.findByUsername(username);
+        return customer;
     }
 }

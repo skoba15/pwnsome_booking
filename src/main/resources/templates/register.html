@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<style>
+    form {
+        margin:0 auto;
+        width:300px
+    }
+    input {
+        margin-bottom:3px;
+        padding:10px;
+        width: 100%;
+        border:1px solid #CCC
+    }
+    button {
+        padding:10px
+    }
+    label {
+        cursor:pointer
+    }
+
+    #form-switch:checked~#register-form {
+        display:block
+    }
+</style>
+
+<form id='register-form' th:action="@{/registerCustomer}" th:object="${customerDTO}" method='post'>
+    <table>
+        <tr>
+            <td width = 200px><input type="text" placeholder="Username" th:field = "*{username}" required></td>
+
+        </tr>
+        <tr>
+            <td><input type="password" placeholder="Password"  th:field="*{password}" required></td>
+        </tr>
+        <tr>
+            <td>
+                <button type='submit'>Register</button>
+            </td>
+        </tr>
+
+    </table>
+    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style = "font-size : 11px; color : red;">Username Error</p>
+    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style = "font-size : 11px; color : red;">Password Error</p>
+</form>
+
+
+
+</html>
