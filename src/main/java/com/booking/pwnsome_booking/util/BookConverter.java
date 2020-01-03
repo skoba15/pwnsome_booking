@@ -4,13 +4,23 @@ import com.booking.pwnsome_booking.dto.*;
 import com.booking.pwnsome_booking.model.*;
 import org.modelmapper.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
 
+import javax.annotation.*;
 import java.util.*;
 
+@Component
 public class BookConverter {
 
-    @Autowired
     private static ModelMapper modelMapper;
+
+    @Autowired
+    private ModelMapper modelMapper0;
+
+    @PostConstruct
+    private void initStaticDao () {
+        modelMapper = modelMapper0;
+    }
 
     public static BookDTO fromEntityToDTO(Book book){
         BookDTO bookDTO = modelMapper.map(book, BookDTO.class);

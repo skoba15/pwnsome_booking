@@ -11,8 +11,11 @@ import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.*;
 import org.springframework.web.servlet.*;
+import org.springframework.web.servlet.mvc.support.*;
 
+import javax.servlet.http.*;
 import javax.validation.*;
+import java.util.*;
 
 @Controller
 public class LoginController {
@@ -26,15 +29,17 @@ public class LoginController {
     @GetMapping("/")
     public String homePage(Model model) {
         model.addAttribute("appName", appName);
-        model.addAttribute("customerDTO", new CustomerDTO());
+        if(!model.asMap().containsKey("customerDTO")){
+            model.addAttribute("customerDTO", new CustomerDTO());
+        }
         return "login";
     }
 
 
     @RequestMapping(value = "/loginCustomer", method = RequestMethod.POST)
-    public ModelAndView homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model) throws UsernameExistsException {
+    public String homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, RedirectAttributes redirectAttributes,  HttpSession session) throws UsernameExistsException {
 
-        Customer customer = null;
+        CustomerDTO customer = null;
         if(!result.hasErrors()){
             customer = customerService.checkCustomer(customerDTO);
         }
@@ -42,10 +47,13 @@ public class LoginController {
             result.rejectValue("username", "incorrectFields", "Either Username or Password is incorrect");
         }
         if(result.hasErrors()){
-            return new ModelAndView("login", "customerDTO", customerDTO);
+            redirectAttributes.addFlashAttribute("customerDTO", customerDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerDTO", result);
+            return "redirect:";
         }
         else{
-            return new ModelAndView("CustomerPage", "customerDTO", customerDTO);
+            session.setAttribute("customerDTO", customer);
+            return "redirect:/customerPage";
         }
     }
 

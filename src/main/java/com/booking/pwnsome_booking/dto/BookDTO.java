@@ -26,6 +26,22 @@ public class BookDTO implements Serializable {
         return taken;
     }
 
+    public void setTaken(Boolean taken) {
+        this.taken = taken;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public BookDTO(String title) {
         this.title = title;
     }

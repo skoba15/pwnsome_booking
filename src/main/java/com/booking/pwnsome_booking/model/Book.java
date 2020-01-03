@@ -3,6 +3,7 @@ package com.booking.pwnsome_booking.model;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -16,8 +17,8 @@ public class Book {
     private String title;
     private Boolean taken;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer owner;
 
@@ -31,6 +32,22 @@ public class Book {
 
     public void setId(Long id) {
         Id = id;
+    }
+
+    public void setTaken(Boolean taken) {
+        this.taken = taken;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Boolean getTaken() {

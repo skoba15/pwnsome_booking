@@ -9,6 +9,12 @@ import java.io.*;
 public class CustomerDTO implements Serializable {
 
 
+
+
+    private Long id;
+
+
+
     @NotNull
     @NotEmpty
     private String username;
@@ -43,5 +49,13 @@ public class CustomerDTO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

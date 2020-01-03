@@ -6,13 +6,19 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
-@Service
+
 public interface BookService {
 
     public void createBook(BookDTO bookDTO);
 
     public List<BookDTO> getBooks();
 
+
+    public BookDTO getBookByName(String bookName);
+
     public List<BookDTO> getBooksByCustomer(CustomerDTO customerDTO);
+
+
+    public void updateBook(BookDTO bookDTO);
 
 }

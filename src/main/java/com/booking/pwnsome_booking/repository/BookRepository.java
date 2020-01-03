@@ -10,4 +10,8 @@ import java.util.*;
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findBookByOwner(Customer owner);
+
+    List<Book> findBooksByTaken(Boolean taken);
+
+    Book findBookByTitle(String title);
 }

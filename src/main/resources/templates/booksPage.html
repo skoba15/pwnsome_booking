@@ -1,0 +1,103 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<style>
+    tbody td {border: 1px #DDD solid; padding: 5px; cursor: pointer;}
+
+    .selected {
+        background-color: brown;
+        color: #FFF;
+    }
+</style>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+
+<table id = "table">
+    <thead>
+        <tr>
+            <td> Title </td>
+            <td> Author </td>
+        </tr>
+        <tr th:if="${books.empty}">
+            <td colspan="2"> No Books Available </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.getTitle()}"> Title </td>
+        </tr>
+    </tbody>
+</table>
+<button onclick = "getBookOptions()">Get Book</button>
+
+<script type="text/javascript" th:inline="javascript">
+
+    selectedBook = "";
+
+    $("#table tbody tr").click(function(){
+        $(this).addClass('selected').siblings().removeClass('selected');
+        selectedBook = $(this).find('td:first').html();
+        alert([[${pageType}]]);
+    });
+
+
+    function getBookOptions(){
+        var pageType = [[${pageType}]];
+        if(pageType == "myBooks"){
+            removeBook();
+        }
+        else{
+            getBook();
+        }
+    }
+
+    function getBook() {
+        if (selectedBook != "") {
+            $.ajax({
+                type: "POST",
+                url: "/getBook/" + selectedBook,
+                timeout: 100000,
+                async: false,
+                success: function (id) {
+                    location.reload();
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                    display(e);
+                },
+                done: function (e) {
+                    console.log("DONE");
+                }
+            });
+            selectedBook = "";
+        }
+    }
+
+
+    function removeBook() {
+        if (selectedBook != "") {
+            $.ajax({
+                type: "POST",
+                url: "/removeBook/" + selectedBook,
+                timeout: 100000,
+                success: function (id) {
+                    location.reload();
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                    display(e);
+                },
+                done: function (e) {
+                    console.log("DONE");
+                }
+            });
+            selectedBook = "";
+        }
+    }
+</script>
+
+</html>
+
+
+

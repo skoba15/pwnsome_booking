@@ -18,17 +18,17 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer createCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
-        Customer customer = usernameExists(customerDTO.getUsername());
-        if(customer != null){
+    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
+        CustomerDTO newCustomer = usernameExists(customerDTO.getUsername());
+        if(newCustomer != null){
             throw new UsernameExistsException("There already exists an account with the name " + customerDTO.getUsername());
         }
-        return customerRepository.save(CustomerConverter.fromDTOToEntity(customerDTO));
+        return CustomerConverter.fromEntityToDTO(customerRepository.save(CustomerConverter.fromDTOToEntity(customerDTO)));
     }
 
     @Override
-    public Customer checkCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
-        Customer customer = usernameExists(customerDTO.getUsername());
+    public CustomerDTO checkCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
+        CustomerDTO customer = usernameExists(customerDTO.getUsername());
         if(customer != null && customerDTO.getPassword().equals(customer.getPassword())){
             return customer;
         }
@@ -37,9 +37,17 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+    @Override
+    public CustomerDTO getCustomer(String username) {
+        return CustomerConverter.fromEntityToDTO(customerRepository.findByUsername(username));
+    }
 
-    private Customer usernameExists(String username){
-        Customer customer = (Customer) customerRepository.findByUsername(username);
-        return customer;
+
+    private CustomerDTO usernameExists(String username){
+        if(customerRepository.findByUsername(username) != null) {
+            CustomerDTO customerDTO = CustomerConverter.fromEntityToDTO(customerRepository.findByUsername(username));
+            return customerDTO;
+        }
+        return null;
     }
 }
