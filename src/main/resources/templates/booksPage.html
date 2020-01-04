@@ -29,16 +29,22 @@
         </tr>
     </tbody>
 </table>
-<button onclick = "getBookOptions()">Get Book</button>
+<button onclick = "getBookOptions()"  id='btnAddProfile'>Get Book</button>
 
 <script type="text/javascript" th:inline="javascript">
 
     selectedBook = "";
 
+    if([[${pageType}]] == 'myBooks'){
+        $("#btnAddProfile").html('Return Book');
+    }
+    else{
+        $("#btnAddProfile").html('Get Book');
+    }
+
     $("#table tbody tr").click(function(){
         $(this).addClass('selected').siblings().removeClass('selected');
         selectedBook = $(this).find('td:first').html();
-        alert([[${pageType}]]);
     });
 
 
