@@ -14,6 +14,7 @@ import org.springframework.web.context.request.*;
 import org.springframework.web.servlet.*;
 import org.springframework.web.servlet.mvc.support.*;
 
+import javax.servlet.http.*;
 import javax.validation.*;
 
 @Controller
@@ -34,7 +35,7 @@ public class RegisterController {
 
 
     @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
-    public String homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, RedirectAttributes redirectAttributes) {
+    public String homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         CustomerDTO newCustomer = new CustomerDTO();
         if(!result.hasErrors()){
@@ -49,7 +50,7 @@ public class RegisterController {
             return "redirect:/registerPage";
         }
         else{
-            redirectAttributes.addFlashAttribute("customerDTO", customerDTO);
+            session.setAttribute("customerDTO", newCustomer);
             return "redirect:/customerPage";
         }
     }
