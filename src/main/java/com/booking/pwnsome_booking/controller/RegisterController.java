@@ -34,8 +34,8 @@ public class RegisterController {
     }
 
 
-    @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
-    public String homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+    @RequestMapping(value = "/registerPage", method = RequestMethod.POST)
+    public String registerPage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         CustomerDTO newCustomer = new CustomerDTO();
         if(!result.hasErrors()){

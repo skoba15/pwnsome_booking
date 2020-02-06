@@ -23,11 +23,9 @@ public class AppController {
 
 
     @RequestMapping(value = "/getBook/{bookName}", method = RequestMethod.POST)
-    public String homePage(@PathVariable(value = "bookName") String bookName, Model model, HttpSession session) {
+    public String getBook(@PathVariable(value = "bookName") String bookName, Model model, HttpSession session) {
         BookDTO bookDTO = bookService.getBookByName(bookName);
-        System.out.println("bookName" + bookDTO.getTitle());
         CustomerDTO customerDTO = (CustomerDTO) session.getAttribute("customerDTO");
-        System.out.println("bookId" + customerDTO.getUsername());
         bookDTO.setUser(customerDTO);
         bookDTO.setTaken(true);
         bookService.updateBook(bookDTO);
@@ -35,7 +33,7 @@ public class AppController {
     }
 
     @RequestMapping(value = "/removeBook/{bookName}", method = RequestMethod.POST)
-    public String removeBook(@PathVariable(value = "bookName") String bookName, Model model, HttpSession session) {
+    public String returnBook(@PathVariable(value = "bookName") String bookName, Model model, HttpSession session) {
         BookDTO bookDTO = bookService.getBookByName(bookName);
         CustomerDTO customerDTO = (CustomerDTO) session.getAttribute("customerDTO");
         bookDTO.setUser(null);
@@ -46,7 +44,7 @@ public class AppController {
 
 
     @RequestMapping(value = "/customerPage", method = RequestMethod.GET)
-    public String homePage(Model model, HttpSession session) {
+    public String customerPage(Model model, HttpSession session) {
         model.addAttribute("customerDTO", session.getAttribute("customerDTO"));
         return "customerPage";
     }

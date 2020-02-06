@@ -30,14 +30,14 @@
     }
 </style>
 
-<form id='login-form' th:action="@{/loginCustomer}" th:object="${customerDTO}" method='post'>
+<form id='login-form' th:action="@{/}" th:object="${customerDTO}" method='post'>
     <table>
         <tr>
-            <td width = 200px><input type="text" placeholder="Username" th:field = "*{username}" required></td>
+            <td width = 200px><input type="text" placeholder="Username" th:field = "*{username}" required name = "username"></td>
 
         </tr>
         <tr>
-            <td><input type="password" placeholder="Password"  th:field="*{password}" required></td>
+            <td><input type="password" placeholder="Password"  th:field="*{password}" required name = "password"></td>
         </tr>
         <tr>
             <td>
@@ -46,7 +46,7 @@
         </tr>
 
     </table>
-    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style = "font-size : 11px; color : red;">Username Error</p>
+    <p th:text="${errorMessage}"> sddhsadhakdhakd</p>
 </form>
 
 <p align = center><b><a th:href="@{/registerPage}">Don't have an account? Sign up now!</a></b></p>

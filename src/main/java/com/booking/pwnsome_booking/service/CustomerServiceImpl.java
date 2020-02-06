@@ -7,6 +7,7 @@ import com.booking.pwnsome_booking.repository.*;
 import com.booking.pwnsome_booking.util.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.core.parameters.*;
+import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.stereotype.*;
 
 
@@ -17,12 +18,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) throws UsernameExistsException {
         CustomerDTO newCustomer = usernameExists(customerDTO.getUsername());
         if(newCustomer != null){
             throw new UsernameExistsException("There already exists an account with the name " + customerDTO.getUsername());
         }
+        customerDTO.setPassword(encoder.encode(customerDTO.getPassword()));
         return CustomerConverter.fromEntityToDTO(customerRepository.save(CustomerConverter.fromDTOToEntity(customerDTO)));
     }
 

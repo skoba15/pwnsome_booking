@@ -5,6 +5,8 @@ import com.booking.pwnsome_booking.exception.*;
 import com.booking.pwnsome_booking.model.*;
 import com.booking.pwnsome_booking.service.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.context.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.validation.*;
@@ -27,34 +29,40 @@ public class LoginController {
     private CustomerService customerService;
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage(@RequestParam(name = "error", required = false) boolean error, Model model) {
         model.addAttribute("appName", appName);
-        if(!model.asMap().containsKey("customerDTO")){
+        if(!model.asMap().containsKey("customerDTO")) {
             model.addAttribute("customerDTO", new CustomerDTO());
         }
+        if(error)model.addAttribute("errorMessage", "Either Username or Password is Incorrect");
         return "login";
     }
 
 
-    @RequestMapping(value = "/loginCustomer", method = RequestMethod.POST)
-    public String homePage(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO, BindingResult result, WebRequest request, Model model, RedirectAttributes redirectAttributes,  HttpSession session) throws UsernameExistsException {
 
-        CustomerDTO customer = null;
-        if(!result.hasErrors()){
-            customer = customerService.checkCustomer(customerDTO);
-        }
-        if(customer == null){
-            result.rejectValue("username", "incorrectFields", "Either Username or Password is incorrect");
-        }
-        if(result.hasErrors()){
-            redirectAttributes.addFlashAttribute("customerDTO", customerDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerDTO", result);
-            return "redirect:";
-        }
-        else{
-            session.setAttribute("customerDTO", customer);
-            return "redirect:/customerPage";
-        }
+    @RequestMapping(value = "/loginFailed", method = RequestMethod.GET)
+    public String loginError(Model model) {
+        model.addAttribute("customerDTO", new CustomerDTO());
+        model.addAttribute("errorMessage", "Either username or Password is incorrect");
+        return "login";
     }
+
+
+
+    @RequestMapping(value = "/loginSuccess", method = RequestMethod.GET)
+    public String loginSuccess(HttpSession session) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        session.setAttribute("customerDTO", customerService.getCustomer(authentication.getName()));
+        return "redirect:/customerPage";
+    }
+
+
+    @RequestMapping(value = "/perform_logout", method = RequestMethod.GET)
+    public void logout(HttpSession session) {
+        session.removeAttribute("customerDTO");
+    }
+
+
+
 
 }

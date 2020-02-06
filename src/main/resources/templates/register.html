@@ -22,7 +22,7 @@
     }
 </style>
 
-<form id='register-form' th:action="@{/registerCustomer}" th:object="${customerDTO}" method='post'>
+<form id='register-form' th:action="@{/registerPage}" th:object="${customerDTO}" method='post'>
     <table>
         <tr>
             <td width = 200px><input type="text" placeholder="Username" th:field = "*{username}" required></td>
